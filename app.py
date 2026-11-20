@@ -120,6 +120,20 @@ st.markdown(f"""
     .bus-icon {{ font-size: 35px; animation: drive 1s ease-in-out infinite alternate; }}
     @keyframes spin {{ 100% {{ transform: rotate(360deg); }} }}
     @keyframes drive {{ 100% {{ transform: translateY(-8px); }} }}
+
+    /* 6. FIX UNREADABLE METRICS & ALERT TEXT IN LIGHT MODE */
+    [data-testid="stMetricValue"] *, 
+    [data-testid="stMetricLabel"] *,
+    [data-testid="stAlert"] * {{
+        color: {text_color} !important;
+    }}
+
+    /* 7. BRING BACK RESULT CARD BOXES */
+    [data-testid="stVerticalBlockBorderWrapper"] {{
+        background-color: {card_bg} !important;
+        border: 1px solid rgba(128, 128, 128, 0.2) !important;
+        border-radius: 10px !important;
+    }}
     
 </style>
 
