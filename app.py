@@ -13,46 +13,25 @@ def load_data():
         return pd.DataFrame()
 
 df = load_data()
-# --- TEMPORARY TEST CODE ---
-sample_route = df.iloc[0]['route']
-sample_hour = df.iloc[0]['hour']
-route_stops = df[(df['route'] == sample_route) & (df['hour'] == sample_hour)]['stop_name'].tolist()
-st.sidebar.success(f"🧪 **TEST THIS:**\n\n**Boarding:** {route_stops[0]}\n\n**Dest:** {route_stops[-1]}\n\n**Time:** {sample_hour:02d}:00")
-# ---------------------------
 if df.empty:
-    st.error("⚠️ crowding_model.csv not found. Please run build_model.py first!")
+    st.error("⚠️ crowding_model.csv.gz not found. Please run build_model.py first!")
     st.stop()
 
 all_stops = sorted(df['stop_name'].dropna().unique())
 
-# 3. LIGHT/DARK THEME STATE
-if 'theme' not in st.session_state:
-    st.session_state.theme = 'dark'
+# 3. STATIC DARK THEME (Booking.com Style)
+bg_color = "#02122c" 
+text_color = "#ffffff"
+accent_border = "#febb02"
+card_bg = "rgba(255, 255, 255, 0.05)"
 
-def toggle_theme():
-    st.session_state.theme = 'light' if st.session_state.theme == 'dark' else 'dark'
-
-# Dynamic Colors
-if st.session_state.theme == 'dark':
-    bg_color = "#02122c" # Navy
-    text_color = "#ffffff"
-    accent_border = "#febb02" # Yellow
-    card_bg = "rgba(255, 255, 255, 0.05)"
-else:
-    bg_color = "#f0f2f5" # Light Gray
-    text_color = "#1a1a1a"
-    accent_border = "#006ce4" # Blue
-    card_bg = "#ffffff"
-
-# 4. INJECT CSS (Theme Styles + The Bus Loader Overlay)
-# 4. INJECT CSS (Theme Styles + The Bus Loader Overlay)
+# 4. INJECT CSS
 st.markdown(f"""
 <style>
     /* 1. Fix Full Screen Background */
     .stApp, [data-testid="stAppViewContainer"] {{
         background-color: {bg_color} !important;
         color: {text_color} !important;
-        transition: background-color 0.3s ease;
     }}
     [data-testid="stHeader"] {{ display: none; }}
     
@@ -85,13 +64,12 @@ st.markdown(f"""
         color: #1a1a1a !important;
         -webkit-text-fill-color: #1a1a1a !important;
     }}
-    /* Fix text selection visibility (makes highlighted text blue) */
+    /* Fix text selection visibility */
     [data-testid="stForm"] div[data-baseweb="select"] input::selection {{
         background-color: #006ce4 !important;
         color: #ffffff !important;
         -webkit-text-fill-color: #ffffff !important;
     }}
-
     
     /* 4. The Search Button */
     [data-testid="stFormSubmitButton"] > button {{
@@ -121,10 +99,22 @@ st.markdown(f"""
     @keyframes spin {{ 100% {{ transform: rotate(360deg); }} }}
     @keyframes drive {{ 100% {{ transform: translateY(-8px); }} }}
 
-    
+    /* 6. FIX METRICS & ALERT TEXT */
+    [data-testid="stMetricValue"] *, 
+    [data-testid="stMetricLabel"] *,
+    [data-testid="stAlert"] * {{
+        color: {text_color} !important;
+    }}
+
+    /* 7. BRING BACK RESULT CARD BOXES */
+    [data-testid="stVerticalBlockBorderWrapper"] {{
+        background-color: {card_bg} !important;
+        border: 1px solid rgba(128, 128, 128, 0.2) !important;
+        border-radius: 10px !important;
+    }}
 </style>
 
-<!-- INJECT THE HTML LOADER DIRECTLY INTO THE PAGE -->
+<!-- INJECT THE HTML LOADER -->
 <div id="nirbheed-loader">
     <div style="position:relative; display:flex; justify-content:center; align-items:center; width:100px; height:100px;">
         <div class="loader-circle"></div>
@@ -135,23 +125,15 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-
-# 5. HEADER & THEME TOGGLE
-col1, col2 = st.columns([5, 1])
-with col1:
-    st.markdown(f"<h2 style='color: #febb02; margin-top: 10px;'>🚌 Nirbheed</h2>", unsafe_allow_html=True)
-    st.markdown("<h1 style='font-weight:800; font-size: 3.5rem; margin-bottom: 0; line-height: 1.1; background: linear-gradient(90deg, #006ce4, #8b5cf6, #febb02); -webkit-background-clip: text; -webkit-text-fill-color: transparent;'>Smart journeys.<br>No crowded surprises.</h1>", unsafe_allow_html=True)
-    st.markdown("<p style='color: #a0aec0; font-size: 1.2rem; margin-bottom: 30px;'>Compare Delhi bus routes by travel time and live seating capacity.</p>", unsafe_allow_html=True)
-with col2:
-    st.markdown("<br>", unsafe_allow_html=True)
-    mode_text = "☀️ Light Mode" if st.session_state.theme == 'dark' else "🌙 Dark Mode"
-    st.button(mode_text, on_click=toggle_theme, use_container_width=True)
+# 5. HEADER
+st.markdown("<h2 style='color: #febb02; margin-top: 10px;'>🚌 Nirbheed</h2>", unsafe_allow_html=True)
+st.markdown("<h1 style='font-weight:800; font-size: 3.5rem; margin-bottom: 0; line-height: 1.1; background: linear-gradient(90deg, #006ce4, #8b5cf6, #febb02); -webkit-background-clip: text; -webkit-text-fill-color: transparent;'>Smart journeys.<br>No crowded surprises.</h1>", unsafe_allow_html=True)
+st.markdown("<p style='color: #a0aec0; font-size: 1.2rem; margin-bottom: 30px;'>Compare Delhi bus routes by travel time and live seating capacity.</p>", unsafe_allow_html=True)
 
 # 6. THE NATIVE SEARCH BAR
 with st.form("search_form"):
     c1, c2, c3, c4 = st.columns([3, 3, 2, 2])
     with c1:
-        # index=None leaves the box blank by default and adds an 'x' to easily delete text
         start_stop = st.selectbox("📍 Boarding At", all_stops, index=None, placeholder="Search Origin...")
     with c2:
         end_stop = st.selectbox("🏁 Destination", all_stops, index=None, placeholder="Search Destination...")
@@ -163,47 +145,50 @@ with st.form("search_form"):
 
 # 7. ROUTING LOGIC
 if search_pressed:
-    hour = int(hour_selected.split(":")[0])
-    st.markdown("---")
-    
-    start_routes = set(df[df['stop_name'] == start_stop]['route'])
-    end_routes = set(df[df['stop_name'] == end_stop]['route'])
-    common_routes = list(start_routes.intersection(end_routes))
-    
-    if not common_routes:
-        st.error(f"No direct routes found between {start_stop} and {end_stop} at {hour:02d}:00.", icon="🚧")
+    if not start_stop or not end_stop:
+        st.error("⚠️ Please select both a Boarding Stop and a Destination.", icon="🚨")
     else:
-        st.success(f"✅ Found {len(common_routes)} routes for your journey.")
-        for route in common_routes:
-            route_hour_data = df[(df['route'] == route) & (df['hour'] == hour)].sort_values(by='stop_sequence')
-            if route_hour_data.empty: continue
+        hour = int(hour_selected.split(":")[0])
+        st.markdown("---")
+        
+        start_routes = set(df[df['stop_name'] == start_stop]['route'])
+        end_routes = set(df[df['stop_name'] == end_stop]['route'])
+        common_routes = list(start_routes.intersection(end_routes))
+        
+        if not common_routes:
+            st.error(f"No direct routes found between {start_stop} and {end_stop} at {hour:02d}:00.", icon="🚧")
+        else:
+            st.success(f"✅ Found {len(common_routes)} routes for your journey.")
+            for route in common_routes:
+                route_hour_data = df[(df['route'] == route) & (df['hour'] == hour)].sort_values(by='stop_sequence')
+                if route_hour_data.empty: continue
+                    
+                try:
+                    start_idx = route_hour_data[route_hour_data['stop_name'] == start_stop].index[0]
+                    end_idx = route_hour_data[route_hour_data['stop_name'] == end_stop].index[0]
+                    segment_data = route_hour_data.loc[min(start_idx, end_idx):max(start_idx, end_idx)]
+                except IndexError:
+                    segment_data = route_hour_data
                 
-            try:
-                start_idx = route_hour_data[route_hour_data['stop_name'] == start_stop].index[0]
-                end_idx = route_hour_data[route_hour_data['stop_name'] == end_stop].index[0]
-                segment_data = route_hour_data.loc[min(start_idx, end_idx):max(start_idx, end_idx)]
-            except IndexError:
-                segment_data = route_hour_data
-            
-            max_load = segment_data['current_load'].max()
-            travel_time = max(len(segment_data) * 2, 15) 
-            
-            if max_load < 35:
-                status, color, progress_val = "🟢 Seats Available", "#22C55E", min(max_load / 70.0, 1.0)
-            elif max_load <= 60:
-                status, color, progress_val = "🟡 Standing Room", "#EAB308", min(max_load / 70.0, 1.0)
-            else:
-                status, color, progress_val = "🔴 Crowded", "#EF4444", 1.0
+                max_load = segment_data['current_load'].max()
+                travel_time = max(len(segment_data) * 2, 15) 
+                
+                if max_load < 35:
+                    status, color, progress_val = "🟢 Seats Available", "#22C55E", min(max_load / 70.0, 1.0)
+                elif max_load <= 60:
+                    status, color, progress_val = "🟡 Standing Room", "#EAB308", min(max_load / 70.0, 1.0)
+                else:
+                    status, color, progress_val = "🔴 Crowded", "#EF4444", 1.0
 
-            with st.container(border=True):
-                head1, head2 = st.columns([2, 1])
-                with head1: st.markdown(f"<h3 style='margin: 0; color: {text_color};'>Route {route}</h3>", unsafe_allow_html=True)
-                with head2: 
-                    st.markdown(f"<div style='text-align: right; font-weight: bold; color: {color};'>{status}</div>", unsafe_allow_html=True)
-                    st.progress(progress_val)
-                
-                st.divider()
-                m1, m2, m3 = st.columns(3)
-                m1.metric("Travel Time", f"{travel_time} mins")
-                m2.metric("Peak Load", f"{int(max_load)} pax")
-                m3.metric("Stops", len(segment_data))
+                with st.container(border=True):
+                    head1, head2 = st.columns([2, 1])
+                    with head1: st.markdown(f"<h3 style='margin: 0; color: {text_color};'>Route {route}</h3>", unsafe_allow_html=True)
+                    with head2: 
+                        st.markdown(f"<div style='text-align: right; font-weight: bold; color: {color};'>{status}</div>", unsafe_allow_html=True)
+                        st.progress(progress_val)
+                    
+                    st.divider()
+                    m1, m2, m3 = st.columns(3)
+                    m1.metric("Travel Time", f"{travel_time} mins")
+                    m2.metric("Peak Load", f"{int(max_load)} pax")
+                    m3.metric("Stops", len(segment_data))
