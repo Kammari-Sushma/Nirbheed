@@ -154,7 +154,7 @@ with st.form("search_form"):
     with c2:
         end_stop = st.selectbox("🏁 Destination", all_stops, index=None, placeholder="Search Destination...")
     with c3:
-        hour_selected = st.selectbox("🕒 Departure Time", [f"{h:02d}:00" for h in range(5, 24)], index=4)
+        hour_selected = st.selectbox("🕒 Departure Time", [f"{h:02d}:00" for h in range(0, 24)], index=9)
     with c4:
         st.markdown("<div style='height: 15px;'></div>", unsafe_allow_html=True)
         search_pressed = st.form_submit_button("Search Buses")
