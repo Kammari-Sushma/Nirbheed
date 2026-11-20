@@ -39,36 +39,18 @@ else:
     card_bg = "#ffffff"
 
 # 4. INJECT CSS (Theme Styles + The Bus Loader Overlay)
+# 4. INJECT CSS (Theme Styles + The Bus Loader Overlay)
 st.markdown(f"""
 <style>
-    /* Dynamic Theme Backgrounds */
-    [data-testid="stAppViewContainer"] {{
+    /* 1. Fix Full Screen Background */
+    .stApp, [data-testid="stAppViewContainer"] {{
         background-color: {bg_color} !important;
         color: {text_color} !important;
         transition: background-color 0.3s ease;
     }}
     [data-testid="stHeader"] {{ display: none; }}
     
-    /* THE NIRBHEED BUS LOADER */
-    #nirbheed-loader {{
-        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-        background-color: #010a17; z-index: 999999;
-        display: flex; flex-direction: column; justify-content: center; align-items: center;
-        animation: fadeOutLoader 0.5s ease-in-out 2.5s forwards; /* Fades out after 2.5s */
-        pointer-events: none;
-    }}
-    @keyframes fadeOutLoader {{ to {{ opacity: 0; visibility: hidden; }} }}
-    
-    .loader-circle {{
-        width: 80px; height: 80px; border: 4px solid rgba(255,255,255,0.1);
-        border-top: 4px solid #febb02; border-radius: 50%;
-        animation: spin 1s linear infinite; position: absolute;
-    }}
-    .bus-icon {{ font-size: 35px; animation: drive 1s ease-in-out infinite alternate; }}
-    @keyframes spin {{ 100% {{ transform: rotate(360deg); }} }}
-    @keyframes drive {{ 100% {{ transform: translateY(-8px); }} }}
-
-    /* Style the Native Form to look like Booking.com */
+    /* 2. Style the Native Form to look like Booking.com */
     [data-testid="stForm"] {{
         background-color: white !important;
         border: 4px solid {accent_border} !important;
@@ -82,7 +64,18 @@ st.markdown(f"""
         color: #1a1a1a !important; font-weight: 700 !important;
     }}
     
-    /* The Search Button */
+    /* 3. FIX THE DROPDOWNS: Force them to be light inside the form */
+    [data-testid="stForm"] div[data-baseweb="select"] > div {{
+        background-color: #f0f2f5 !important;
+        color: #1a1a1a !important;
+        border-radius: 6px !important;
+        border: 1px solid #e7e7e7 !important;
+    }}
+    [data-testid="stForm"] div[data-baseweb="select"] span {{
+        color: #1a1a1a !important;
+    }}
+    
+    /* 4. The Search Button */
     [data-testid="stFormSubmitButton"] > button {{
         background-color: #006ce4 !important; color: white !important;
         font-weight: 800 !important; font-size: 1.1rem !important;
@@ -91,11 +84,24 @@ st.markdown(f"""
     }}
     [data-testid="stFormSubmitButton"] > button:hover {{ background-color: #0056b3 !important; }}
     
-    /* Result Cards */
-    [data-testid="stVerticalBlockBorderWrapper"] {{
-        background-color: {card_bg};
-        border-radius: 10px;
+    /* 5. THE NIRBHEED BUS LOADER */
+    #nirbheed-loader {{
+        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+        background-color: #010a17; z-index: 999999;
+        display: flex; flex-direction: column; justify-content: center; align-items: center;
+        animation: fadeOutLoader 0.5s ease-in-out 2.5s forwards; 
+        pointer-events: none;
     }}
+    @keyframes fadeOutLoader {{ to {{ opacity: 0; visibility: hidden; }} }}
+    
+    .loader-circle {{
+        width: 80px; height: 80px; border: 4px solid rgba(255,255,255,0.1);
+        border-top: 4px solid #febb02; border-radius: 50%;
+        animation: spin 1s linear infinite; position: absolute;
+    }}
+    .bus-icon {{ font-size: 35px; animation: drive 1s ease-in-out infinite alternate; }}
+    @keyframes spin {{ 100% {{ transform: rotate(360deg); }} }}
+    @keyframes drive {{ 100% {{ transform: translateY(-8px); }} }}
 </style>
 
 <!-- INJECT THE HTML LOADER DIRECTLY INTO THE PAGE -->
@@ -108,6 +114,7 @@ st.markdown(f"""
     <p style="color:#888;">Analyzing Live Delhi Crowd Data...</p>
 </div>
 """, unsafe_allow_html=True)
+
 
 # 5. HEADER & THEME TOGGLE
 col1, col2 = st.columns([5, 1])
