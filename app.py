@@ -50,9 +50,9 @@ st.markdown(f"""
     .stApp h2,
     .stApp h3,
     .stApp h4,
-    .stApp li {
+    .stApp li {{
         color: inherit;
-    }
+    }}
     /* 1. Fix Full Screen Background */
     .stApp, [data-testid="stAppViewContainer"] {{
         background-color: {bg_color} !important;
