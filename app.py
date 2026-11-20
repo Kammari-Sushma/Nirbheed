@@ -74,6 +74,18 @@ st.markdown(f"""
     [data-testid="stForm"] div[data-baseweb="select"] span {{
         color: #1a1a1a !important;
     }}
+    /* Fix the invisible typing text */
+    [data-testid="stForm"] div[data-baseweb="select"] input {{
+        color: #1a1a1a !important;
+        -webkit-text-fill-color: #1a1a1a !important;
+    }}
+    /* Fix text selection visibility (makes highlighted text blue) */
+    [data-testid="stForm"] div[data-baseweb="select"] input::selection {{
+        background-color: #006ce4 !important;
+        color: #ffffff !important;
+        -webkit-text-fill-color: #ffffff !important;
+    }}
+
     
     /* 4. The Search Button */
     [data-testid="stFormSubmitButton"] > button {{
@@ -131,9 +143,10 @@ with col2:
 with st.form("search_form"):
     c1, c2, c3, c4 = st.columns([3, 3, 2, 2])
     with c1:
-        start_stop = st.selectbox("📍 Boarding At", all_stops, index=0)
+        # index=None leaves the box blank by default and adds an 'x' to easily delete text
+        start_stop = st.selectbox("📍 Boarding At", all_stops, index=None, placeholder="Search Origin...")
     with c2:
-        end_stop = st.selectbox("🏁 Destination", all_stops, index=len(all_stops)-1 if len(all_stops) > 0 else 0)
+        end_stop = st.selectbox("🏁 Destination", all_stops, index=None, placeholder="Search Destination...")
     with c3:
         hour_selected = st.selectbox("🕒 Departure Time", [f"{h:02d}:00" for h in range(5, 24)], index=4)
     with c4:
