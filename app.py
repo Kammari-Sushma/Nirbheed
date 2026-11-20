@@ -42,6 +42,17 @@ else:
 # 4. INJECT CSS (Theme Styles + The Bus Loader Overlay)
 st.markdown(f"""
 <style>
+    /* Force all general text to follow the selected theme */
+    .stApp p,
+    .stApp label,
+    .stApp span,
+    .stApp h1,
+    .stApp h2,
+    .stApp h3,
+    .stApp h4,
+    .stApp li {
+        color: inherit;
+    }
     /* 1. Fix Full Screen Background */
     .stApp, [data-testid="stAppViewContainer"] {{
         background-color: {bg_color} !important;
@@ -135,7 +146,7 @@ col1, col2 = st.columns([5, 1])
 with col1:
     st.markdown(f"<h2 style='color: #febb02; margin-top: 10px;'>🚌 Nirbheed</h2>", unsafe_allow_html=True)
     st.markdown("<h1 style='font-weight:800; font-size: 3.5rem; margin-bottom: 0; line-height: 1.1; background: linear-gradient(90deg, #006ce4, #8b5cf6, #febb02); -webkit-background-clip: text; -webkit-text-fill-color: transparent;'>Smart journeys.<br>No crowded surprises.</h1>", unsafe_allow_html=True)
-    st.markdown("<p style='color: #a0aec0; font-size: 1.2rem; margin-bottom: 30px;'>Compare Delhi bus routes by travel time and live seating capacity.</p>", unsafe_allow_html=True)
+    st.markdown(f"<p style='color: {text_color}; font-size: 1.2rem; margin-bottom: 30px;'>Compare Delhi bus routes by travel time and live seating capacity.</p>", unsafe_allow_html=True)
 with col2:
     st.markdown("<br>", unsafe_allow_html=True)
     mode_text = "☀️ Light Mode" if st.session_state.theme == 'dark' else "🌙 Dark Mode"
