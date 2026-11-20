@@ -26,10 +26,23 @@ if df.empty:
 all_stops = sorted(df['stop_name'].dropna().unique())
 
 # 3. LIGHT/DARK THEME STATE
-bg_color = "#02122c" 
-text_color = "#ffffff"
-accent_border = "#febb02"
-card_bg = "rgba(255, 255, 255, 0.05)"
+if 'theme' not in st.session_state:
+    st.session_state.theme = 'dark'
+
+def toggle_theme():
+    st.session_state.theme = 'light' if st.session_state.theme == 'dark' else 'dark'
+
+# Dynamic Colors
+if st.session_state.theme == 'dark':
+    bg_color = "#02122c" # Navy
+    text_color = "#ffffff"
+    accent_border = "#febb02" # Yellow
+    card_bg = "rgba(255, 255, 255, 0.05)"
+else:
+    bg_color = "#f0f2f5" # Light Gray
+    text_color = "#1a1a1a"
+    accent_border = "#006ce4" # Blue
+    card_bg = "#ffffff"
 
 # 4. INJECT CSS (Theme Styles + The Bus Loader Overlay)
 # 4. INJECT CSS (Theme Styles + The Bus Loader Overlay)
