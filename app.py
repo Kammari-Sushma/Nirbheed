@@ -13,6 +13,12 @@ def load_data():
         return pd.DataFrame()
 
 df = load_data()
+# --- TEMPORARY TEST CODE ---
+sample_route = df.iloc[0]['route']
+sample_hour = df.iloc[0]['hour']
+route_stops = df[(df['route'] == sample_route) & (df['hour'] == sample_hour)]['stop_name'].tolist()
+st.sidebar.success(f"🧪 **TEST THIS:**\n\n**Boarding:** {route_stops[0]}\n\n**Dest:** {route_stops[-1]}\n\n**Time:** {sample_hour:02d}:00")
+# ---------------------------
 if df.empty:
     st.error("⚠️ crowding_model.csv not found. Please run build_model.py first!")
     st.stop()
