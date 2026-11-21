@@ -2,7 +2,7 @@
 Built for the Delhi Transport Stack Hackathon (Phase 1), Nirbheed helps commuters avoid crowded buses. By processing over 2.5 million ETM ticketing records and cross-referencing them with static GTFS network schedules, this tool predicts stop-by-stop bus capacity and offers commuters routes optimized for both speed and comfort.  
 
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://nirbheed-by-kammari-sushma.streamlit.app/)  
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)] (https://nirbheed-by-kammari-sushma.streamlit.app/)  
 [![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://www.python.org/)  
 [![Pandas](https://img.shields.io/badge/Pandas-Data_Processing-150458.svg)](https://pandas.pydata.org/)  
 [![Hackathon](https://img.shields.io/badge/Delhi_Transport_Stack-Problem_2-febb02.svg)](https://delhi.transportstack.in/hackathon/#ps2)  
