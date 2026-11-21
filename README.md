@@ -59,7 +59,7 @@ We designed this pipeline to be 100% reproducible on a local machine.
 ### 1. Setup Environment
 ```bash
 git clone [https://github.com/Kammari-Sushma/Nirbheed.git](https://github.com/Kammari-Sushma/Nirbheed.git)
-cd YOUR_REPO_NAME
+cd nirbheed
 pip install -r requirements.txt
 ```
 
