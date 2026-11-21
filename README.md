@@ -11,7 +11,7 @@ Built for the Delhi Transport Stack Hackathon (Phase 1), Nirbheed helps commuter
 **A smart journey planner for Delhi commuters that ranks routes by real-time crowding estimates, not just travel time.** Built for Phase 1 of the Delhi Transport Stack Hackathon.  
 
 ### 🔗 [Live Demo: Test the Nirbheed App Here](https://nirbheed-by-kammari-sushma.streamlit.app/)  
-(https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://nirbheed-by-kammari-sushma.streamlit.app/)  
+[![Streamlit App]](https://nirbheed-by-kammari-sushma.streamlit.app/)  
 
 
 *(Note: If the app has gone to sleep, click "Wake Up" and give it a few seconds to load the compressed GTFS model).*  
