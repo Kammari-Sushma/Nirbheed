@@ -60,7 +60,7 @@ We designed this pipeline to be 100% reproducible on a local machine.
 
 ### 1. Setup Environment
 ```bash
-git clone [https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPO_NAME.git](https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPO_NAME.git)
+git clone [https://github.com/Kammari-Sushma/Nirbheed.git](https://github.com/Kammari-Sushma/Nirbheed.git)
 cd YOUR_REPO_NAME
 pip install -r requirements.txt
 ```
