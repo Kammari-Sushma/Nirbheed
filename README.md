@@ -50,9 +50,7 @@ Our solution strictly decouples heavy data processing from the user interface to
            └─ User inputs Origin/Destination/Time -> Instant visual routing  
 ```
 
-*For a deep dive into our mathematical assumptions, GTFS mapping logic, and data reliability gaps, please read our [Technical Note (METHODOLOGY.md)](METHODOLOGY.md).*
 
----
 
 ## 🚀 Reproducibility (For Evaluators)
 
