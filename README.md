@@ -23,9 +23,9 @@ Commuters in Delhi often skip crowded buses even if they are faster, yet traditi
 1. **Segment-Specific Load:** Instead of showing the average crowding of a whole route, Nirbheed calculates the maximum passenger load *specifically for the exact segment* the commuter intends to travel.  
 2. **The "Invisible Rider" Adjustment:** Raw ETM data misses monthly pass holders. Our ETL pipeline applies a mathematical heuristic (a 20% multiplier) to boardings and alightings to represent true physical bus loads.  
 3. **Cognitive-Load UI:** Commuters shouldn't have to read raw data. We translate complex running loads into three instant visual categories based on Delhi's 12m bus capacities:  
-   - 🟢 **Seats Available** (Load < 35)  
-   - 🟡 **Standing Room** (35 ≤ Load ≤ 60)  
-   - 🔴 **Crowded** (Load > 60)  
+  - 🟢 **Seats Available** (Load < 35)  
+  - 🟡 **Standing Room** (35 ≤ Load ≤ 60)  
+  - 🔴 **Crowded** (Load > 60)  
 
 ---  
 
@@ -46,3 +46,38 @@ Our solution strictly decouples heavy data processing from the user interface to
            ↓  
 🖥️ app.py (Streamlit UI)  
            └─ User inputs Origin/Destination/Time -> Instant visual routing  
+```
+
+*For a deep dive into our mathematical assumptions, GTFS mapping logic, and data reliability gaps, please read our [Technical Note (METHODOLOGY.md)](METHODOLOGY.md).*
+
+---
+
+## 🚀 Reproducibility (For Evaluators)
+
+We designed this pipeline to be 100% reproducible on a local machine.
+
+### 1. Setup Environment
+```bash
+git clone [https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPO_NAME.git](https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPO_NAME.git)
+cd YOUR_REPO_NAME
+pip install -r requirements.txt
+```
+
+### 2. Prepare the Data
+1. Download the Phase 1 `October-Delhi.csv` from the hackathon portal and place it in the root directory.
+2. Ensure the GTFS static files (`routes.txt`, `trips.txt`, `stop_times.txt`, `stops.txt`) are placed inside a `gtfs_data/` folder.
+
+### 3. Run the ETL Pipeline
+This script processes the 2.5M records and generates the compressed model for the app.
+```bash
+python build_model.py
+```
+*(Expected Output: "--- SUCCESS! MODEL REBUILT & SAVED WITH GTFS ROUTING ---")*
+
+### 4. Launch the App Locally
+```bash
+streamlit run app.py
+```
+
+---
+**Developed by Kammari Sushma for the Delhi Transport Stack Hackathon.**
