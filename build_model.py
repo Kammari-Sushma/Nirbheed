@@ -56,5 +56,5 @@ def get_crowd_status(load):
 stop_activity['status'] = stop_activity['current_load'].apply(get_crowd_status)
 
 # Save the much better model
-stop_activity.to_csv('crowding_model.csv', index=False)
+stop_activity.to_csv('crowding_model.csv.gz', index=False, compression='gzip')
 print("\n--- SUCCESS! MODEL REBUILT & SAVED WITH GTFS ROUTING ---")
